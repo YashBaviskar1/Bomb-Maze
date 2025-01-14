@@ -38,8 +38,8 @@ bomb_counts = [[0 for _ in range(GRID_SIZE )] for _ in range(GRID_SIZE)]
 
 king_image = pygame.image.load('assets/king.png')
 king_image = pygame.transform.scale(king_image, (CELL_WIDTH, CELL_HEIGHT))
-tileset_field = pygame.image.load('assets\TileUnknown.png')
-tileset_field = pygame.transform.scale(tileset_field, (SCREEN_WIDTH , SCREEN_HEIGHT ))
+tileset_field = pygame.image.load('assets\grass.png')
+tileset_field = pygame.transform.scale(tileset_field, (CELL_HEIGHT + 40 , CELL_WIDTH + 30))
 def calculate_bomb_counts():
     for row in range(GRID_SIZE):
         for col in range(GRID_SIZE):
@@ -350,12 +350,19 @@ def simulate_kingdom_invasion(start, goal, board):
                          (x * CELL_WIDTH, y * CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT))
         pygame.display.update()
         pygame.time.delay(50)
-
+def draw_tileset():
+    for row in range(GRID_SIZE):
+        for col in range(GRID_SIZE):
+            x = col * CELL_WIDTH
+            y = row * CELL_HEIGHT + 50  
+            SCREEN.blit(tileset_field, (x, y))
 def draw_grid():
     for x in range(0, SCREEN_WIDTH, CELL_WIDTH):
+        #tileset_field
         pygame.draw.line(SCREEN, GRID_COLOR, (x, 50), (x, SCREEN_HEIGHT)) 
     for y in range(50, SCREEN_HEIGHT, CELL_HEIGHT): 
         pygame.draw.line(SCREEN, GRID_COLOR, (0, y), (SCREEN_WIDTH, y))
+        SCREEN.blit(tileset_field, (x, y))
 def draw_stuff():
     draw_bombs()
     draw_numbers()
@@ -370,8 +377,10 @@ def main():
     while True:
 
         SCREEN.fill(WHITE)  
+
         draw_reserved_section() 
         SCREEN.blit(tileset_field, (0, 50))  
+        draw_tileset() 
         draw_grid()
         draw_king()
         if ball_x == 0 or ball_x == GRID_SIZE -1 or ball_y == GRID_SIZE - 1 or ball_y == 0:
